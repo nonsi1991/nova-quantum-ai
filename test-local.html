@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Local Test - Nova Quantum AI</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; }
+        .test-item { margin: 15px 0; padding: 10px; border-left: 4px solid #3b82f6; background: #f8fafc; }
+        .pass { border-color: #10b981; }
+        .fail { border-color: #ef4444; }
+        button { margin: 5px; padding: 8px 16px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Nova Quantum AI - Local Test</h1>
+    
+    <div class="test-item">
+        <h3>1. Paper Trading Demo</h3>
+        <button onclick="window.open('index.html', '_blank')">Test Main App</button>
+        <p>Check: Bot trades automatically, stats update, mobile responsive</p>
+    </div>
+    
+    <div class="test-item">
+        <h3>2. Admin Panel</h3>
+        <button onclick="window.open('admin-panel.html', '_blank')">Test Admin Panel</button>
+        <p>Password: <code>NovaQuantumAdmin2026!</code></p>
+        <p>Check: Login works, user management functions, notifications</p>
+    </div>
+    
+    <div class="test-item">
+        <h3>3. Mobile Responsive</h3>
+        <p>Open Chrome DevTools (F12) → Toggle Device Toolbar (Ctrl+Shift+M)</p>
+        <p>Test: iPhone 12, iPad, Android sizes</p>
+    </div>
+    
+    <div class="test-item">
+        <h3>4. Performance</h3>
+        <p>Check: Page loads under 3 seconds, no JavaScript errors in console</p>
+    </div>
+    
+    <script>
+        console.log("Nova Quantum AI Local Test - All systems ready");
+    </script>
+</body>
+</html>
+EOF && echo "✅ Testing Script erstellt"

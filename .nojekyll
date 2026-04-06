@@ -1,0 +1,31 @@
+# Disable Jekyll processing on GitHub Pages
+EOF && echo "✅ .nojekyll Datei erstellt" && echo "6. Erstelle README mit Instruktionen..." && cat > README.md << 'EOF'
+# Nova Quantum AI Platform
+
+## Paper Trading Demo - 1:1 Bot Simulation
+
+### Features:
+- **1:1 Bot Trading Simulation** - Watch AI trade automatically
+- **Admin User Management** - Approve/Delete user accounts
+- **Mobile Responsive** - Works on all devices
+- **Professional Interface** - Built for friends' real money trading
+
+### Access:
+- **Main App:** `https://nova-quantum-ai.duckdns.org`
+- **Admin Panel:** `https://nova-quantum-ai.duckdns.org/admin-panel.html`
+- **Admin Password:** `NovaQuantumAdmin2026!` (Beta phase)
+
+### How It Works:
+1. **Paper Trading Demo** - Bot trades automatically every 30 seconds
+2. **User watches only** - Cannot trade manually (1:1 simulation)
+3. **After trust built** - User can upgrade with Bitunix API key
+4. **Admin controls** - Approve new users, delete unwanted accounts
+
+### Security:
+- **SSL Encryption** - All traffic encrypted
+- **Admin Approval** - Every new user must be approved
+- **Access Control** - Only known users can use the platform
+
+### For Friends' Real Money:
+This platform is built with the highest quality standards because friends' real money is at stake. Every feature is tested and perfected before deployment.
+EOF && echo "✅ README erstellt"

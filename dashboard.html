@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Quantum AI | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f172a',
+                        card: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark text-white font-sans min-h-screen">
+    <!-- Sidebar -->
+    <nav class="fixed w-64 h-full bg-card p-6 border-r border-slate-700">
+        <h1 class="text-2xl font-bold mb-10 text-blue-500">Nova Quantum AI</h1>
+        <ul class="space-y-6">
+            <li class="text-blue-400 font-semibold cursor-pointer"><i class="fas fa-chart-line mr-3"></i>Dashboard</li>
+            <li class="text-slate-400 hover:text-white cursor-pointer"><i class="fas fa-history mr-3"></i>History</li>
+            <li class="text-slate-400 hover:text-white cursor-pointer"><i class="fas fa-cog mr-3"></i>Settings</li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="ml-64 p-8">
+        <header class="mb-8">
+            <h2 class="text-3xl font-bold">Trading Dashboard</h2>
+            <p class="text-slate-400">AI-driven market analysis engine is active.</p>
+        </header>
+
+        <!-- Risk Selector -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <button onclick="selectRisk('aggressive')" class="p-6 bg-card rounded-xl border border-transparent hover:border-red-500 transition-all group">
+                <i class="fas fa-fire text-red-500 text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">AGGRESSIVE</h3>
+                <p class="text-sm text-slate-400">Max Profit • Fast Trades • 20x Leverage</p>
+            </button>
+            <button onclick="selectRisk('medium')" class="p-6 bg-card rounded-xl border border-transparent hover:border-green-500 transition-all group">
+                <i class="fas fa-check-circle text-green-500 text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">MEDIUM</h3>
+                <p class="text-sm text-slate-400">Balanced Growth • 10x Leverage</p>
+            </button>
+            <button onclick="selectRisk('conservative')" class="p-6 bg-card rounded-xl border border-transparent hover:border-blue-500 transition-all group">
+                <i class="fas fa-shield-alt text-blue-500 text-3xl mb-4"></i>
+                <h3 class="text-xl font-bold mb-2">CONSERVATIVE</h3>
+                <p class="text-sm text-slate-400">Safe & Steady • 5x Leverage</p>
+            </button>
+        </section>
+
+        <!-- Chart Placeholder -->
+        <div class="h-64 bg-card rounded-xl border border-slate-700 flex items-center justify-center">
+            <p class="text-slate-400">Real-time Chart Placeholder (ApexCharts)</p>
+        </div>
+    </main>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

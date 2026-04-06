@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Quantum AI | Feedback Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f172a',
+                        card: '#1e293b',
+                        'status-open': '#f97316',      // orange
+                        'status-in_progress': '#3b82f6', // blue
+                        'status-resolved': '#10b981',  // green
+                        'status-closed': '#94a3b8',    // slate
+                        'priority-low': '#94a3b8',
+                        'priority-medium': '#3b82f6',
+                        'priority-high': '#f97316',
+                        'priority-critical': '#ef4444',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark text-white font-sans min-h-screen">
+    <!-- Sidebar -->
+    <nav class="fixed w-64 h-full bg-card p-6 border-r border-slate-700">
+        <h1 class="text-2xl font-bold mb-10 text-blue-500">Nova Quantum AI</h1>
+        <ul class="space-y-6">
+            <li class="text-slate-400 hover:text-white cursor-pointer">
+                <a href="dashboard.html" class="flex items-center">
+                    <i class="fas fa-chart-line mr-3"></i>Dashboard
+                </a>
+            </li>
+            <li class="text-slate-400 hover:text-white cursor-pointer">
+                <a href="admin-feedback.html" class="flex items-center text-blue-400 font-semibold">
+                    <i class="fas fa-comments mr-3"></i>Feedback Admin
+                </a>
+            </li>
+            <li class="text-slate-400 hover:text-white cursor-pointer">
+                <i class="fas fa-cog mr-3"></i>Settings
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="ml-64 p-m-8">
+        <!-- Header -->
+        <header class="mb-8 p-8">
+            <h2 class="text-3xl font-bold mb-2">Feedback Admin Panel</h2>
+            <p class="text-slate-400">Manage user feedback, bug reports, and feature requests</p>
+        </header>
+
+        <!-- Stats Cards -->
+        <section id="stats-cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-8 mb-8">
+            <!-- Stats will be populated by JavaScript -->
+            <div class="bg-card rounded-xl p-5 animate-pulse">
+                <div class="h-4 bg-slate-700 rounded w-1/3 mb-3"></div>
+                <div class="h-8 bg-slate-700 rounded w-1/2"></div>
+            </div>
+        </section>
+
+        <!-- Filters -->
+        <section class="bg-card rounded-xl border border-slate-700 p-6 mx-8 mb-8">
+            <div class="flex flex-wrap gap-4 items-center">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Type</label>
+                    <select id="filter-type" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm min-w-32">
+                        <option value="">All Types</option>
+                        <option value="bug">🐛 Bug</option>
+                        <option value="feature">✨ Feature</option>
+                        <option value="improvement">⚡ Improvement</option>
+                        <option value="question">❓ Question</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Status</label>
+                    <select id="filter-status" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm min-w-32">
+                        <option value="">All Status</option>
+                        <option value="open">Open</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Priority</label>
+                    <select id="filter-priority" class="bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm min-w-32">
+                        <option value="">All Priority</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </div>
+
+                <div class="flex-1 min-w-64">
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Search</label>
+                    <div class="flex gap-2">
+                        <input id="filter-search" type="text" placeholder="Search title/description…"
+                               class="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm
+                                      placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button id="filter-clear"
+                                class="bg-slate-700 hover:bg-slate-600 text-slate-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Table -->
+        <section class="mx-8 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Feedback Items</h3>
+                <div class="flex items-center gap-4 text-sm text-slate-400">
+                    <span id="table-count">Loading…</span>
+                    <button id="refresh-btn" class="bg-slate-800 hover:bg-slate-700 p-2 rounded-lg transition-colors">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button id="export-btn" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                        <i class="fas fa-download mr-2"></i>Export CSV
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-700">
+                <table class="w-full bg-card text-sm">
+                    <thead class="bg-slate-800/50">
+                        <tr>
+                            <th class="text-left py-3 px-4 font-semibold text-slate-300">ID</th>
+                            <th class="text-left py-3 px-4 font-semibold text-slate-300">Type</th>
+                            <th class="text-left py-3 px-4 font-semibold text-slate-300">Title</th>
+                            <th class="text-left py-3 px-4 font-semibold text-slate-300">User</th>
+                            <th class="text-left py-3 px-4 font-semibold text-slate-300">Status</th>
+                            <th class="text-left py-3 px-4 font-semibold text-slate-300">Priority</th>
+                            <th class="text-left py-3 px-4 font-semibold text-slate-300">Created</th>
+                            <th class="text-left py-3 px-4 font-semibold text-slate-300">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="feedback-table-body" class="divide-y divide-slate-700">
+                        <!-- Will be populated by JavaScript -->
+                        <tr>
+                            <td colspan="8" class="py-8 text-center text-slate-500">
+                                <i class="fas fa-spinner fa-spin text-lg mr-2"></i>Loading feedback…
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="flex justify-between items-center mt-6">
+                <button id="prev-page" disabled
+                        class="bg-slate-800 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed
+                               text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    <i class="fas fa-chevron-left mr-2"></i>Previous
+                </button>
+                <div class="text-sm text-slate-400">
+                    Page <span id="current-page">1</span>
+                    of <span id="total-pages">1</span>
+                    (<span id="total-items">0</span> items)
+                </div>
+                <button id="next-page" disabled
+                        class="bg-slate-800 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed
+                               text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Next<i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Edit Modal (hidden) -->
+        <div id="edit-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
+            <div class="bg-slate-800 border border-slate-600 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                <div class="flex items-center justify-between p-6 border-b border-slate-700">
+                    <h3 class="text-xl font-bold text-white">Update Feedback</h3>
+                    <button id="edit-close" class="text-slate-400 hover:text-white p-1 rounded">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+                <form id="edit-form" class="p-6 space-y-5">
+                    <input type="hidden" id="edit-id">
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Status</label>
+                        <select id="edit-status" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm">
+                            <option value="open">Open</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-1">Priority</label>
+                        <select id="edit-priority" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                            <option value="critical">Critical</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="edit-notes" class="block text-sm font-medium text-slate-300 mb-1">
+                            Admin Notes
+                        </label>
+                        <textarea id="edit-notes" rows="3"
+                                  placeholder="Internal notes, resolution details…"
+                                  class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-white text-sm"></textarea>
+                    </div>
+
+                    <div id="edit-error" class="hidden bg-red-900/50 border border-red-700 text-red-300 rounded-lg p-4 text-sm"></div>
+
+                    <div class="flex gap-3 pt-2">
+                        <button type="submit"
+                                class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2.5 rounded-lg">
+                            <i class="fas fa-save mr-2"></i>Save Changes
+                        </button>
+                        <button type="button" id="edit-cancel"
+                                class="px-5 bg-slate-700 hover:bg-slate-600 text-slate-300 font-semibold py-2.5 rounded-lg">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="js/api.js"></script>
+    <script src="js/admin-feedback.js"></script>
+</body>
+</html>

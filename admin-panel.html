@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Quantum AI - Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .admin-container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; }
+        .card-header { background: #0f172a; border-bottom: 1px solid #334155; }
+        .btn-approve { background: linear-gradient(135deg, #10b981, #059669); border: none; }
+        .btn-reject { background: linear-gradient(135deg, #ef4444, #dc2626); border: none; }
+        .btn-delete { background: linear-gradient(135deg, #f59e0b, #d97706); border: none; }
+        .user-card { transition: all 0.3s; }
+        .user-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .stat-card { background: linear-gradient(135deg, #1e40af, #1d4ed8); }
+        .nav-admin { background: #0f172a; border-bottom: 2px solid #3b82f6; }
+    </style>
+</head>
+<body>
+    <!-- Admin Navigation -->
+    <nav class="navbar navbar-expand-lg nav-admin">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white fw-bold" href="#">
+                <i class="fas fa-shield-alt me-2"></i>Nova Quantum AI - Admin Panel
+            </a>
+            <div class="navbar-nav">
+                <a class="nav-link text-white" href="index.html"><i class="fas fa-home me-1"></i> Main App</a>
+                <a class="nav-link text-white active" href="#"><i class="fas fa-users-cog me-1"></i> User Management</a>
+                <a class="nav-link text-white" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-1"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container mt-4">
+        <!-- Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card stat-card text-white p-3">
+                    <h5><i class="fas fa-users me-2"></i> Total Users</h5>
+                    <h2 id="totalUsers">0</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card text-white p-3">
+                    <h5><i class="fas fa-clock me-2"></i> Pending Approval</h5>
+                    <h2 id="pendingUsers">0</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card text-white p-3">
+                    <h5><i class="fas fa-check-circle me-2"></i> Active Users</h5>
+                    <h2 id="activeUsers">0</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card text-white p-3">
+                    <h5><i class="fas fa-ban me-2"></i> Blocked Users</h5>
+                    <h2 id="blockedUsers">0</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Users Section -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-user-clock me-2"></i> Users Pending Approval</h4>
+                <span class="badge bg-warning" id="pendingCount">0 pending</span>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Registered</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pendingUsersTable">
+                            <!-- Filled by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center text-muted" id="noPendingUsers" style="display: none;">
+                    <i class="fas fa-check-circle fa-2x mb-2"></i>
+                    <p>No users pending approval</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Existing Users Section -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="fas fa-user-check me-2"></i> Existing Users</h4>
+                <span class="badge bg-info" id="existingCount">0 users</span>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Last Login</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="existingUsersTable">
+                            <!-- Filled by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center text-muted" id="noExistingUsers" style="display: none;">
+                    <i class="fas fa-users fa-2x mb-2"></i>
+                    <p>No existing users</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="modal fade" id="adminLoginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title"><i class="fas fa-shield-alt me-2"></i>Admin Login</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Admin Password</label>
+                        <input type="password" class="form-control bg-secondary text-white" id="adminPassword" 
+                               placeholder="Enter admin password" autocomplete="off">
+                    </div>
+                    <div class="alert alert-danger d-none" id="loginError">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Invalid password
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-primary" id="loginBtn">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="admin-panel.js"></script>
+</body>
+</html>
+EOF && echo "✅ Admin Panel HTML erstellt"

@@ -1,0 +1,20 @@
+:root {
+    --bg-dark: #0f172a;
+    --bg-card: #1e293b;
+    --primary: #3b82f6;
+    --success: #10b981;
+    --danger: #ef4444;
+}
+
+body {
+    background-color: var(--bg-dark);
+}
+
+.bg-card {
+    background-color: var(--bg-card);
+}
+
+/* Animations */
+button:hover {
+    transform: translateY(-5px);
+}
